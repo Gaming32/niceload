@@ -2,7 +2,7 @@ name: gradle
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  build-and-export:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
