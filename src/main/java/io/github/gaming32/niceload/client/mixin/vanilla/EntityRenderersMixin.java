@@ -1,14 +1,12 @@
 package io.github.gaming32.niceload.client.mixin.vanilla;
 
 import com.google.common.collect.ImmutableMap;
-import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.EntityRenderers;
 import net.minecraft.entity.EntityType;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -62,10 +60,7 @@ public class EntityRenderersMixin {
         EntityRendererFactory<?> factory,
         CallbackInfo ci
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$ENTITY_TASK_NAME);
-        if (task == null) return;
-        final Identifier id = Registry.ENTITY_TYPE.getId(entityType);
-        task.setDescription(id.toString());
+        NiceLoad.setTaskDescription(niceload$ENTITY_TASK_NAME, Registry.ENTITY_TYPE.getId(entityType));
     }
 
     @Inject(
@@ -79,9 +74,7 @@ public class EntityRenderersMixin {
         EntityRendererFactory<?> factory,
         CallbackInfo ci
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$ENTITY_TASK_NAME);
-        if (task == null) return;
-        task.addProgress();
+        NiceLoad.addTaskProgress(niceload$ENTITY_TASK_NAME);
     }
 
     @Inject(
@@ -117,9 +110,7 @@ public class EntityRenderersMixin {
         EntityRendererFactory<?> factory,
         CallbackInfo ci
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$ENTITY_TASK_NAME);
-        if (task == null) return;
-        task.setDescription(type);
+        NiceLoad.setTaskDescription(niceload$PLAYER_TASK_NAME, type);
     }
 
     @Inject(
@@ -133,8 +124,6 @@ public class EntityRenderersMixin {
         EntityRendererFactory<?> factory,
         CallbackInfo ci
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$ENTITY_TASK_NAME);
-        if (task == null) return;
-        task.addProgress();
+        NiceLoad.addTaskProgress(niceload$PLAYER_TASK_NAME);
     }
 }

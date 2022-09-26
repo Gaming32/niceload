@@ -1,7 +1,6 @@
 package io.github.gaming32.niceload.client.mixin.vanilla;
 
 import com.mojang.datafixers.util.Pair;
-import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;
 import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.render.model.SpriteAtlasManager;
@@ -61,9 +60,7 @@ public class ModelLoaderMixin {
         SpriteAtlasTexture spriteAtlasTexture,
         SpriteAtlasTexture.Data data
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$ATLAS_TASK_NAME);
-        if (task == null) return;
-        task.setDescription(spriteAtlasTexture.getId().toString());
+        NiceLoad.setTaskDescription(niceload$ATLAS_TASK_NAME, spriteAtlasTexture.getId());
     }
 
     @Inject(
@@ -79,9 +76,7 @@ public class ModelLoaderMixin {
         Profiler profiler,
         CallbackInfoReturnable<SpriteAtlasManager> cir
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$ATLAS_TASK_NAME);
-        if (task == null) return;
-        task.addProgress();
+        NiceLoad.addTaskProgress(niceload$ATLAS_TASK_NAME);
     }
 
     @Inject(
@@ -105,9 +100,7 @@ public class ModelLoaderMixin {
         at = @At("HEAD")
     )
     private void beforeSingleBake(Identifier id, CallbackInfo ci) {
-        final LoadTask task = NiceLoad.getTask(niceload$BAKE_TASK_NAME);
-        if (task == null) return;
-        task.setDescription(id.toString());
+        NiceLoad.setTaskDescription(niceload$BAKE_TASK_NAME, id);
     }
 
     @Inject(
@@ -115,9 +108,7 @@ public class ModelLoaderMixin {
         at = @At("RETURN")
     )
     private void afterSingleBake(Identifier id, CallbackInfo ci) {
-        final LoadTask task = NiceLoad.getTask(niceload$BAKE_TASK_NAME);
-        if (task == null) return;
-        task.addProgress();
+        NiceLoad.addTaskProgress(niceload$BAKE_TASK_NAME);
     }
 
     @Inject(

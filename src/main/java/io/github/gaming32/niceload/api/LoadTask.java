@@ -52,8 +52,12 @@ public final class LoadTask {
         return description;
     }
 
-    public LoadTask setDescription(String description) {
-        this.description = description;
+    public LoadTask setDescription(Object description) {
+        if (description == null) {
+            this.description = "";
+        } else {
+            this.description = description.toString();
+        }
         NiceLoad.attemptRender();
         return this;
     }

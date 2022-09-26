@@ -1,6 +1,5 @@
 package io.github.gaming32.niceload.client.mixin.vanilla;
 
-import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -61,7 +60,6 @@ public class ParticleManagerMixin {
         at = @At("RETURN")
     )
     private void method_18833(ResourceManager resourceManager, Identifier id, Map<Identifier, List<Identifier>> result, CallbackInfo ci) {
-        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
-        if (task != null) task.setProgress(result.size());
+        NiceLoad.addTaskProgress(niceload$TASK_NAME);
     }
 }

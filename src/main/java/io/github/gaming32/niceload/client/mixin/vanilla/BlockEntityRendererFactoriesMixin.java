@@ -1,13 +1,11 @@
 package io.github.gaming32.niceload.client.mixin.vanilla;
 
 import com.google.common.collect.ImmutableMap;
-import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,10 +57,7 @@ public class BlockEntityRendererFactoriesMixin {
         BlockEntityRendererFactory<?> factory,
         CallbackInfo ci
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
-        if (task == null) return;
-        final Identifier id = Registry.BLOCK_ENTITY_TYPE.getId(type);
-        if (id != null) task.setDescription(id.toString());
+        NiceLoad.setTaskDescription(niceload$TASK_NAME, Registry.BLOCK_ENTITY_TYPE.getId(type));
     }
 
     @Inject(
@@ -76,8 +71,6 @@ public class BlockEntityRendererFactoriesMixin {
         BlockEntityRendererFactory<?> factory,
         CallbackInfo ci
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
-        if (task == null) return;
-        task.addProgress();
+        NiceLoad.addTaskProgress(niceload$TASK_NAME);
     }
 }

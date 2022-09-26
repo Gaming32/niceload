@@ -1,6 +1,5 @@
 package io.github.gaming32.niceload.client.mixin.vanilla;
 
-import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;
 import net.minecraft.client.texture.AbstractTexture;
 import net.minecraft.client.texture.TextureManager;
@@ -51,9 +50,7 @@ public class TextureManagerMixin {
         Identifier identifier,
         AbstractTexture abstractTexture
     ) {
-        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
-        if (task == null) return;
-        task.setDescription(identifier.toString());
+        NiceLoad.setTaskDescription(niceload$TASK_NAME, identifier);
     }
 
     @Inject(
@@ -65,9 +62,7 @@ public class TextureManagerMixin {
         )
     )
     private void afterRegisterTexture(ResourceManager resourceManager, Executor executor, Void void_, CallbackInfo ci) {
-        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
-        if (task == null) return;
-        task.addProgress();
+        NiceLoad.addTaskProgress(niceload$TASK_NAME);
     }
 
     @Inject(

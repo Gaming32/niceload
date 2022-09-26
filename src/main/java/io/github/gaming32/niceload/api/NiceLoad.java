@@ -60,6 +60,25 @@ public final class NiceLoad {
         if (task != null) task.finish();
     }
 
+    public static void addTaskProgress(String name, int progress) {
+        final LoadTask task = getTask(name);
+        if (task != null) task.addProgress(progress);
+    }
+
+    public static void addTaskProgress(String name) {
+        addTaskProgress(name, 1);
+    }
+
+    public static void setTaskProgress(String name, int progress) {
+        final LoadTask task = getTask(name);
+        if (task != null) task.setProgress(progress);
+    }
+
+    public static void setTaskDescription(String name, Object description) {
+        final LoadTask task = getTask(name);
+        if (task != null) task.setDescription(description);
+    }
+
     static void attemptRender() {
         final long currentTime = System.currentTimeMillis();
         if (currentTime - lastRenderAttempt < 30) return;
