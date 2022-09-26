@@ -1,15 +1,19 @@
 package io.github.gaming32.niceload.api;
 
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashOverlay;
+import net.minecraft.resource.ResourceReloader;
 
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public final class NiceLoad {
-    private static final Map<String, LoadTask> toAddQueue = new LinkedHashMap<>();
-    private static long lastRenderAttempt = System.currentTimeMillis();
+    private static final Map<String, LoadTask> TO_ADD_QUEUE = new LinkedHashMap<>();
+    private static final Set<String> REGISTERED_RELOADERS = new HashSet<>();
 
     private NiceLoad() {
         throw new AssertionError();
@@ -21,9 +25,9 @@ public final class NiceLoad {
             return null;
         }
         final SplashScreen splash = (SplashScreen)overlay;
-        if (!toAddQueue.isEmpty()) {
-            toAddQueue.values().forEach(splash::addTask);
-            toAddQueue.clear();
+        if (!TO_ADD_QUEUE.isEmpty()) {
+            TO_ADD_QUEUE.values().forEach(splash::addTask);
+            TO_ADD_QUEUE.clear();
         }
         return splash;
     }
@@ -33,7 +37,7 @@ public final class NiceLoad {
         if (splash != null) {
             splash.addTask(task);
         } else {
-            toAddQueue.put(task.getName(), task);
+            TO_ADD_QUEUE.put(task.getName(), task);
         }
         return task;
     }
@@ -43,7 +47,7 @@ public final class NiceLoad {
         if (splash != null) {
             return splash.getTask(name);
         } else {
-            return toAddQueue.get(name);
+            return TO_ADD_QUEUE.get(name);
         }
     }
 
@@ -79,11 +83,35 @@ public final class NiceLoad {
         if (task != null) task.setDescription(description);
     }
 
-    static void attemptRender() {
-        final long currentTime = System.currentTimeMillis();
-        if (currentTime - lastRenderAttempt < 30) return;
-        if (!MinecraftClient.getInstance().isOnThread()) return;
-        lastRenderAttempt = currentTime;
-        MinecraftClient.getInstance().render(false);
+    public static void registerReloader(String name) {
+        REGISTERED_RELOADERS.add(name);
     }
+
+    public static void registerReloader(ResourceReloader reloader) {
+        REGISTERED_RELOADERS.add(getReloaderName(reloader));
+    }
+
+    public static boolean isReloaderRegistered(String name) {
+        return REGISTERED_RELOADERS.contains(name);
+    }
+
+    public static boolean isReloaderRegistered(ResourceReloader reloader) {
+        return REGISTERED_RELOADERS.contains(getReloaderName(reloader));
+    }
+
+    public static String getReloaderName(ResourceReloader reloader) {
+        String name = reloader.getName();
+        if (
+            reloader instanceof IdentifiableResourceReloadListener &&
+            name.equals(reloader.getClass().getSimpleName())
+        ) {
+            return ((IdentifiableResourceReloadListener)reloader).getFabricId().toString();
+        }
+        if (name.equals("") && reloader.getClass().getDeclaringClass() != null) {
+            name = reloader.getClass().getDeclaringClass().getSimpleName();
+        }
+        return name;
+    }
+
+
 }

@@ -3,6 +3,7 @@ package io.github.gaming32.niceload.client.mixin.core;
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.SplashScreen;
+import io.github.gaming32.niceload.client.NiceLoadInternals;
 import io.github.gaming32.niceload.client.NiceLoadMod;
 import io.github.gaming32.niceload.client.SimpleTextRenderer;
 import net.minecraft.client.MinecraftClient;
@@ -38,6 +39,7 @@ public class SplashOverlayMixin implements SplashScreen {
     @Override
     public LoadTask addTask(LoadTask task) {
         niceload$tasks.put(task.getName(), task);
+        NiceLoadInternals.attemptRender();
         return task;
     }
 
@@ -82,9 +84,14 @@ public class SplashOverlayMixin implements SplashScreen {
             }
             if (++count > limit) continue;
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, h);
-            renderProgressBar(matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity, progress);
-            String text = task.getName() + " - " +
-                (Math.round(MathHelper.clamp(progress, 0f, 1f) * 1000) / 10.0) + "%";
+            renderProgressBar(
+                matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity,
+                task.getMaxProgress() > 1 ? progress : 0.5f
+            );
+            String text = task.getName();
+            if (task.getMaxProgress() > 1) {
+                text += " - " + (Math.round(MathHelper.clamp(progress, 0f, 1f) * 1000) / 10.0) + "%";
+            }
             if (!task.getDescription().isEmpty()) {
                 text += " - " + task.getDescription();
                 NiceLoadMod.getInstance().getTextRenderer().drawText(

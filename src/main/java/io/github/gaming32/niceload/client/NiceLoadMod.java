@@ -1,6 +1,7 @@
 package io.github.gaming32.niceload.client;
 
 import com.mojang.logging.LogUtils;
+import io.github.gaming32.niceload.api.NiceLoad;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import org.slf4j.Logger;
 
@@ -25,6 +26,8 @@ public class NiceLoadMod implements PreLaunchEntrypoint {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+        NiceLoad.registerReloader("BlockEntityRenderDispatcher");
+        NiceLoad.registerReloader("EntityRenderDispatcher");
     }
 
     public static NiceLoadMod getInstance() {

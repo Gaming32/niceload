@@ -1,5 +1,7 @@
 package io.github.gaming32.niceload.api;
 
+import io.github.gaming32.niceload.client.NiceLoadInternals;
+
 public final class LoadTask {
     private final String name;
     private int progress;
@@ -22,19 +24,19 @@ public final class LoadTask {
 
     public LoadTask setProgress(int progress) {
         this.progress = progress;
-        NiceLoad.attemptRender();
+        NiceLoadInternals.attemptRender();
         return this;
     }
 
     public LoadTask addProgress(int progress) {
         this.progress += progress;
-        NiceLoad.attemptRender();
+        NiceLoadInternals.attemptRender();
         return this;
     }
 
     public LoadTask addProgress() {
         progress++;
-        NiceLoad.attemptRender();
+        NiceLoadInternals.attemptRender();
         return this;
     }
 
@@ -44,7 +46,7 @@ public final class LoadTask {
 
     public LoadTask setMaxProgress(int maxProgress) {
         this.maxProgress = maxProgress;
-        NiceLoad.attemptRender();
+        NiceLoadInternals.attemptRender();
         return this;
     }
 
@@ -58,13 +60,13 @@ public final class LoadTask {
         } else {
             this.description = description.toString();
         }
-        NiceLoad.attemptRender();
+        NiceLoadInternals.attemptRender();
         return this;
     }
 
     public LoadTask finish() {
         progress = maxProgress;
-        NiceLoad.attemptRender();
+        NiceLoadInternals.attemptRender();
         return this;
     }
 
