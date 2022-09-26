@@ -1,4 +1,4 @@
-package io.github.gaming32.niceload.client.mixin;
+package io.github.gaming32.niceload.client.mixin.vanilla;
 
 import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;

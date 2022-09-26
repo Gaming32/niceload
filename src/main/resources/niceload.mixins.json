@@ -6,11 +6,8 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": [
-    "SimpleResourceReloadMixin",
-    "SplashOverlayMixin"
-  ],
   "client": [
-    "ParticleManagerMixin"
+    "core.SplashOverlayMixin",
+    "vanilla.ParticleManagerMixin"
   ]
 }

@@ -1,4 +1,4 @@
-package io.github.gaming32.niceload.client.mixin;
+package io.github.gaming32.niceload.client.mixin.core;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.gaming32.niceload.api.LoadTask;
