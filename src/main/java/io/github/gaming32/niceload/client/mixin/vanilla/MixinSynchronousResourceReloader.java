@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(SynchronousResourceReloader.class)
-public interface SynchronousResourceReloaderMixin {
+public interface MixinSynchronousResourceReloader {
     @Inject(
         method = "method_29490(Lnet/minecraft/util/profiler/Profiler;Lnet/minecraft/resource/ResourceManager;)V",
         at = @At("HEAD")

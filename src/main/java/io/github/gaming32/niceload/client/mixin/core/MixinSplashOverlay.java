@@ -26,7 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Mixin(SplashOverlay.class)
-public class SplashOverlayMixin implements SplashScreen {
+public class MixinSplashOverlay implements SplashScreen {
     @Shadow @Final private MinecraftClient client;
     @Unique
     private final Map<String, LoadTask> niceload$tasks = new LinkedHashMap<>();

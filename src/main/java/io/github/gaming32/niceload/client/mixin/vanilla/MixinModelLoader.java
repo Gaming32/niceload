@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @Mixin(ModelLoader.class)
-public class ModelLoaderMixin {
+public class MixinModelLoader {
     @Shadow @Final private Map<Identifier, Pair<SpriteAtlasTexture, SpriteAtlasTexture.Data>> spriteAtlasData;
     @Shadow @Final private Map<Identifier, UnbakedModel> modelsToBake;
     @Unique

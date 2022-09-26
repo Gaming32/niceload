@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 
 @Mixin(BlockEntityRendererFactories.class)
-public class BlockEntityRendererFactoriesMixin {
+public class MixinBlockEntityRendererFactories {
     @Shadow @Final private static Map<BlockEntityType<?>, BlockEntityRendererFactory<?>> FACTORIES;
     @Unique
     private static final String niceload$TASK_NAME = "Block Entity Renderers";

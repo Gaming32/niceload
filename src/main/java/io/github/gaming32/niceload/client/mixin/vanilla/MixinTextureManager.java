@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.Executor;
 
 @Mixin(TextureManager.class)
-public class TextureManagerMixin {
+public class MixinTextureManager {
     @Shadow @Final private Map<Identifier, AbstractTexture> textures;
     @Unique
     private static final String niceload$TASK_NAME = "Texture Manager";

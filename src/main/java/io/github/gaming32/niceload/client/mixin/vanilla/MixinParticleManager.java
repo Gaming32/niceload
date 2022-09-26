@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 @Mixin(ParticleManager.class)
-public class ParticleManagerMixin {
+public class MixinParticleManager {
     @Unique
     private static final String niceload$TASK_NAME = "Particle Manager";
 

@@ -7,14 +7,14 @@
     "defaultRequire": 1
   },
   "client": [
-    "core.SplashOverlayMixin",
-    "vanilla.BlockEntityRendererFactoriesMixin",
-    "vanilla.EntityRenderersMixin",
-    "vanilla.ModelLoaderMixin",
-    "vanilla.ParticleManagerMixin",
-    "vanilla.TextureManagerMixin"
+    "core.MixinSplashOverlay",
+    "vanilla.MixinBlockEntityRendererFactories",
+    "vanilla.MixinEntityRenderers",
+    "vanilla.MixinModelLoader",
+    "vanilla.MixinParticleManager",
+    "vanilla.MixinTextureManager"
   ],
   "mixins": [
-    "vanilla.SynchronousResourceReloaderMixin"
+    "vanilla.MixinSynchronousResourceReloader"
   ]
 }
