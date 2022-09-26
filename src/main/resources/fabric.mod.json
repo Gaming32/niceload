@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "niceload",
+  "version": "${version}",
+  "name": "NiceLoad",
+  "description": "Improves the Minecraft loading screen",
+  "authors": ["Gaming32"],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "preLaunch": [
+      "io.github.gaming32.niceload.client.NiceLoadMod"
+    ]
+  },
+  "mixins": [
+    "niceload.mixins.json"
+  ],
+  "accessWidener": "niceload.accessWidener",
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}

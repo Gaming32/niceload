@@ -1,0 +1,6 @@
+accessWidener	v1	named
+accessible	field	net/minecraft/client/gui/screen/SplashOverlay	MOJANG_RED	I
+accessible	field	net/minecraft/client/gui/screen/SplashOverlay	MONOCHROME_BLACK	I
+accessible	field	net/minecraft/resource/SimpleResourceReload	reloaderCount	I
+accessible	field	net/minecraft/resource/SimpleResourceReload	appliedCount	I
+accessible	field	net/minecraft/resource/SimpleResourceReload	toApplyCount	I
