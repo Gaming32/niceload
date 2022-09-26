@@ -2,7 +2,6 @@ package io.github.gaming32.niceload.client.mixin;
 
 import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.NiceLoad;
-import io.github.gaming32.niceload.api.SplashScreen;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.resource.ResourceManager;
@@ -27,9 +26,6 @@ public class ParticleManagerMixin {
     @Unique
     private static final String niceload$TASK_NAME = "Particle Manager";
 
-    @Unique
-    private LoadTask niceload$task;
-
     @Inject(
         method = "reload(Lnet/minecraft/resource/ResourceReloader$Synchronizer;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;Lnet/minecraft/util/profiler/Profiler;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;",
         at = @At(
@@ -49,9 +45,7 @@ public class ParticleManagerMixin {
         Map<?, ?> map,
         CompletableFuture<?>[] completableFutures
     ) {
-        niceload$task = new LoadTask(niceload$TASK_NAME, completableFutures.length);
-        final SplashScreen splash = NiceLoad.getSplashScreen();
-        if (splash != null) splash.addTask(niceload$task);
+        NiceLoad.beginTask(niceload$TASK_NAME, completableFutures.length);
     }
 
     @Inject(
@@ -59,7 +53,8 @@ public class ParticleManagerMixin {
         at = @At("RETURN")
     )
     private void method_18831(Profiler profiler, Map<?, ?> map, SpriteAtlasTexture.Data data, CallbackInfo ci) {
-        niceload$task.finish();
+        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
+        if (task != null) task.finish();
     }
 
     @Inject(
@@ -67,8 +62,7 @@ public class ParticleManagerMixin {
         at = @At("RETURN")
     )
     private void method_18833(ResourceManager resourceManager, Identifier id, Map<Identifier, List<Identifier>> result, CallbackInfo ci) {
-        niceload$task.setProgress(result.size());
-        final SplashScreen splash = NiceLoad.getSplashScreen();
-        if (splash != null) splash.addTask(niceload$task);
+        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
+        if (task != null) task.setProgress(result.size());
     }
 }
