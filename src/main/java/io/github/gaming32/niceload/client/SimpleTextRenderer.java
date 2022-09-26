@@ -65,7 +65,7 @@ public final class SimpleTextRenderer {
         }
     }
 
-    public void drawText(MatrixStack matrices, String s, int x, int y, int color) {
+    public void drawText(MatrixStack matrices, String s, int x, int y, int maxWidth, int color) {
         if ((color & 0xff000000) == 0) {
             color |= 0xff000000;
         }
@@ -76,11 +76,14 @@ public final class SimpleTextRenderer {
             (color & 0xff) / 255f,
             (color >>> 24 & 0xff) / 255f
         );
+        int width = 0;
         for (int i = 0; i < s.length(); i++) {
             final int index = allowedChars.indexOf(s.charAt(i));
             if (index != -1) {
                 final int c = index + 32;
                 final int cWidth = charWidth[c];
+                width += cWidth;
+                if (maxWidth > 0 && width > maxWidth) break;
                 DrawableHelper.drawTexture(
                     matrices,
                     x, y,
@@ -94,7 +97,7 @@ public final class SimpleTextRenderer {
     }
 
     public void drawCenteredText(MatrixStack matrices, String s, int x, int y, int color) {
-        drawText(matrices, s, x - getStringWidth(s) / 2, y, color);
+        drawText(matrices, s, x - getStringWidth(s) / 2, y, 0, color);
     }
 
     public int getStringWidth(String s) {

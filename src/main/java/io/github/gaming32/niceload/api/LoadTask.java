@@ -22,16 +22,19 @@ public final class LoadTask {
 
     public LoadTask setProgress(int progress) {
         this.progress = progress;
+        NiceLoad.attemptRender();
         return this;
     }
 
     public LoadTask addProgress(int progress) {
         this.progress += progress;
+        NiceLoad.attemptRender();
         return this;
     }
 
     public LoadTask addProgress() {
         progress++;
+        NiceLoad.attemptRender();
         return this;
     }
 
@@ -41,6 +44,7 @@ public final class LoadTask {
 
     public LoadTask setMaxProgress(int maxProgress) {
         this.maxProgress = maxProgress;
+        NiceLoad.attemptRender();
         return this;
     }
 
@@ -50,11 +54,13 @@ public final class LoadTask {
 
     public LoadTask setDescription(String description) {
         this.description = description;
+        NiceLoad.attemptRender();
         return this;
     }
 
     public LoadTask finish() {
         progress = maxProgress;
+        NiceLoad.attemptRender();
         return this;
     }
 

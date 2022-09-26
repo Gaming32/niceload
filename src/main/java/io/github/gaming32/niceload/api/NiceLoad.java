@@ -9,6 +9,7 @@ import java.util.Map;
 
 public final class NiceLoad {
     private static final Map<String, LoadTask> toAddQueue = new LinkedHashMap<>();
+    private static long lastRenderAttempt = System.currentTimeMillis();
 
     private NiceLoad() {
         throw new AssertionError();
@@ -57,5 +58,13 @@ public final class NiceLoad {
     public static void endTask(String name) {
         final LoadTask task = getTask(name);
         if (task != null) task.finish();
+    }
+
+    static void attemptRender() {
+        final long currentTime = System.currentTimeMillis();
+        if (currentTime - lastRenderAttempt < 30) return;
+        if (!MinecraftClient.getInstance().isOnThread()) return;
+        lastRenderAttempt = currentTime;
+        MinecraftClient.getInstance().render(false);
     }
 }

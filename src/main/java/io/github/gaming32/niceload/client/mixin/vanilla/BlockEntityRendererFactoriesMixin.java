@@ -24,7 +24,7 @@ import java.util.Map;
 public class BlockEntityRendererFactoriesMixin {
     @Shadow @Final private static Map<BlockEntityType<?>, BlockEntityRendererFactory<?>> FACTORIES;
     @Unique
-    private static final String niceload$TASK_NAME = "Block Entity Renderer";
+    private static final String niceload$TASK_NAME = "Block Entity Renderers";
 
     @Inject(
         method = "reload(Lnet/minecraft/client/render/block/entity/BlockEntityRendererFactory$Context;)Ljava/util/Map;",

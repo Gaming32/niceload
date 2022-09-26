@@ -4,8 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.gaming32.niceload.api.LoadTask;
 import io.github.gaming32.niceload.api.SplashScreen;
 import io.github.gaming32.niceload.client.NiceLoadMod;
-import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
-import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import io.github.gaming32.niceload.client.SimpleTextRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.SplashOverlay;
 import net.minecraft.client.util.math.MatrixStack;
@@ -30,7 +29,6 @@ public class SplashOverlayMixin implements SplashScreen {
     @Shadow @Final private MinecraftClient client;
     @Unique
     private final Map<String, LoadTask> niceload$tasks = new LinkedHashMap<>();
-    private final Object2FloatMap<LoadTask> niceload$taskProgress = new Object2FloatArrayMap<>();
 
     @Override
     public SplashOverlay getOverlay() {
@@ -58,13 +56,15 @@ public class SplashOverlayMixin implements SplashScreen {
         locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci, int i, int j, long l, float f, float g, float h, int k, int p, double d, int q, double e, int r, int s, float t) {
-        final int textColor = MinecraftClient.getInstance().options.getMonochromeLogo().getValue()
-            ? SplashOverlay.MOJANG_RED : SplashOverlay.MONOCHROME_BLACK;
+//        final int textColor = MinecraftClient.getInstance().options.getMonochromeLogo().getValue()
+//            ? SplashOverlay.MOJANG_RED : SplashOverlay.MONOCHROME_BLACK;
+        final int textColor = 43520;
         final float opacity = 1.0f - MathHelper.clamp(f, 0.0f, 1.0f);
 
-        NiceLoadMod.getInstance().getTextRenderer().drawCenteredText(
+        final SimpleTextRenderer textRenderer = NiceLoadMod.getInstance().getTextRenderer();
+        textRenderer.drawCenteredText(
             matrices,
-            (Math.round(MathHelper.clamp(t, 0f, 100f) * 1000) / 10.0) + "%",
+            (Math.round(MathHelper.clamp(t, 0f, 1f) * 1000) / 10.0) + "%",
             i / 2, s - 3,
             (textColor & 0xffffff) | ((int)(opacity * 255) << 24)
         );
@@ -75,30 +75,32 @@ public class SplashOverlayMixin implements SplashScreen {
         int y = s + 20;
         while (it.hasNext()) {
             final LoadTask task = it.next();
-            if (task.finished()) {
+            final float progress = task.getProgress01();
+            if (progress >= 1f) {
                 it.remove();
-                niceload$taskProgress.removeFloat(task);
                 continue;
             }
-            if (++count > limit) break;
-            final float progress = task.getProgress01();
-            final float visualProgress = MathHelper.clamp(
-                niceload$taskProgress.getFloat(task) * 0.95f + progress * 0.05f, 0f, 1f
-            );
-            niceload$taskProgress.put(task, visualProgress);
+            if (++count > limit) continue;
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, h);
-            renderProgressBar(matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity, visualProgress);
+            renderProgressBar(matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity, progress);
             String text = task.getName() + " - " +
-                (Math.round(MathHelper.clamp(progress, 0f, 100f) * 1000) / 10.0) + "%";
+                (Math.round(MathHelper.clamp(progress, 0f, 1f) * 1000) / 10.0) + "%";
             if (!task.getDescription().isEmpty()) {
                 text += " - " + task.getDescription();
+                NiceLoadMod.getInstance().getTextRenderer().drawText(
+                    matrices,
+                    text,
+                    i / 2 - r + 3, y - 3, r * 2 - 6,
+                    textColor | ((int)(opacity * 255) << 24)
+                );
+            } else {
+                NiceLoadMod.getInstance().getTextRenderer().drawCenteredText(
+                    matrices,
+                    text,
+                    i / 2, y - 3,
+                    textColor | ((int)(opacity * 255) << 24)
+                );
             }
-            NiceLoadMod.getInstance().getTextRenderer().drawCenteredText(
-                matrices,
-                text,
-                i / 2, y - 3,
-                (textColor & 0xffffff) | ((int)(opacity * 255) << 24)
-            );
             y += 20;
         }
     }

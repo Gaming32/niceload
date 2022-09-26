@@ -9,6 +9,9 @@
   "client": [
     "core.SplashOverlayMixin",
     "vanilla.BlockEntityRendererFactoriesMixin",
-    "vanilla.ParticleManagerMixin"
+    "vanilla.EntityRenderersMixin",
+    "vanilla.ModelLoaderMixin",
+    "vanilla.ParticleManagerMixin",
+    "vanilla.TextureManagerMixin"
   ]
 }
