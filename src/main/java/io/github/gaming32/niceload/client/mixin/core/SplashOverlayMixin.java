@@ -88,9 +88,14 @@ public class SplashOverlayMixin implements SplashScreen {
             niceload$taskProgress.put(task, visualProgress);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, h);
             renderProgressBar(matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity, visualProgress);
+            String text = task.getName() + " - " +
+                (Math.round(MathHelper.clamp(progress, 0f, 100f) * 1000) / 10.0) + "%";
+            if (!task.getDescription().isEmpty()) {
+                text += " - " + task.getDescription();
+            }
             NiceLoadMod.getInstance().getTextRenderer().drawCenteredText(
                 matrices,
-                task.getName() + " - " + (Math.round(MathHelper.clamp(progress, 0f, 100f) * 1000) / 10.0) + "%",
+                text,
                 i / 2, y - 3,
                 (textColor & 0xffffff) | ((int)(opacity * 255) << 24)
             );

@@ -22,6 +22,7 @@ public final class NiceLoad {
         final SplashScreen splash = (SplashScreen)overlay;
         if (!toAddQueue.isEmpty()) {
             toAddQueue.values().forEach(splash::addTask);
+            toAddQueue.clear();
         }
         return splash;
     }
@@ -51,5 +52,10 @@ public final class NiceLoad {
 
     public static LoadTask beginTask(String name) {
         return beginTask(name, 1);
+    }
+
+    public static void endTask(String name) {
+        final LoadTask task = getTask(name);
+        if (task != null) task.finish();
     }
 }

@@ -53,8 +53,7 @@ public class ParticleManagerMixin {
         at = @At("RETURN")
     )
     private void method_18831(Profiler profiler, Map<?, ?> map, SpriteAtlasTexture.Data data, CallbackInfo ci) {
-        final LoadTask task = NiceLoad.getTask(niceload$TASK_NAME);
-        if (task != null) task.finish();
+        NiceLoad.endTask(niceload$TASK_NAME);
     }
 
     @Inject(

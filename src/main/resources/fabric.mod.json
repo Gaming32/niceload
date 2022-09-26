@@ -19,7 +19,7 @@
   "accessWidener": "niceload.accessWidener",
   "depends": {
     "fabricloader": ">=0.14.9",
-    "fabric": "*",
+    "fabric-resource-loader-v0": "*",
     "minecraft": "1.19.2"
   }
 }

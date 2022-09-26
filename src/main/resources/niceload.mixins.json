@@ -8,6 +8,7 @@
   },
   "client": [
     "core.SplashOverlayMixin",
+    "vanilla.BlockEntityRendererFactoriesMixin",
     "vanilla.ParticleManagerMixin"
   ]
 }
