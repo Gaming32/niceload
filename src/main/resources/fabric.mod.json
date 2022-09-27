@@ -3,11 +3,16 @@
   "id": "niceload",
   "version": "${version}",
   "name": "NiceLoad",
-  "description": "Improves the Minecraft loading screen",
+  "description": "Fancy loading screen",
   "authors": ["Gaming32"],
-  "contact": {},
+  "contact": {
+    "homepage": "https://github.com/Gaming32/niceload",
+    "issues": "https://github.com/Gaming32/niceload/issues",
+    "sources": "https://github.com/Gaming32/niceload"
+  },
   "license": "MIT",
   "environment": "client",
+  "icon": "assets/niceload/logo.png",
   "entrypoints": {
     "preLaunch": [
       "io.github.gaming32.niceload.client.NiceLoadMod"
@@ -20,6 +25,6 @@
   "depends": {
     "fabricloader": ">=0.14.9",
     "fabric-resource-loader-v0": "*",
-    "minecraft": "1.19.2"
+    "minecraft": ">=1.19.2"
   }
 }
