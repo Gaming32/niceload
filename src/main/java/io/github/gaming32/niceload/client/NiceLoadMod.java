@@ -3,6 +3,7 @@ package io.github.gaming32.niceload.client;
 import com.mojang.logging.LogUtils;
 import io.github.gaming32.niceload.api.NiceLoad;
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
+import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -26,8 +27,8 @@ public class NiceLoadMod implements PreLaunchEntrypoint {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-        NiceLoad.registerReloader("BlockEntityRenderDispatcher");
-        NiceLoad.registerReloader("EntityRenderDispatcher");
+        NiceLoad.registerReloader(BlockEntityRenderDispatcher.class.getSimpleName());
+        NiceLoad.registerReloader(BlockEntityRenderDispatcher.class.getSimpleName());
     }
 
     public static NiceLoadMod getInstance() {
