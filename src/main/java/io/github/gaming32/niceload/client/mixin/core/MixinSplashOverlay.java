@@ -38,14 +38,18 @@ public class MixinSplashOverlay implements SplashScreen {
 
     @Override
     public LoadTask addTask(LoadTask task) {
-        niceload$tasks.put(task.getName(), task);
+        synchronized (niceload$tasks) {
+            niceload$tasks.put(task.getName(), task);
+        }
         NiceLoadInternals.attemptRender();
         return task;
     }
 
     @Override
     public LoadTask getTask(String name) {
-        return niceload$tasks.get(name);
+        synchronized (niceload$tasks) {
+            return niceload$tasks.get(name);
+        }
     }
 
     @Inject(
@@ -71,44 +75,46 @@ public class MixinSplashOverlay implements SplashScreen {
             (textColor & 0xffffff) | ((int)(opacity * 255) << 24)
         );
 
-        final Iterator<LoadTask> it = niceload$tasks.values().iterator();
         int count = 0;
         int limit = (client.getWindow().getScaledHeight() - s - 20) / 20;
         int y = s + 20;
-        while (it.hasNext()) {
-            final LoadTask task = it.next();
-            final float progress = task.getProgress01();
-            if (progress >= 1f) {
-                it.remove();
-                continue;
-            }
-            if (++count > limit) continue;
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, h);
-            renderProgressBar(
-                matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity,
-                task.getMaxProgress() > 1 ? progress : 0.5f
-            );
-            String text = task.getName();
-            if (task.getMaxProgress() > 1) {
-                text += " - " + (Math.round(MathHelper.clamp(progress, 0f, 1f) * 1000) / 10.0) + "%";
-            }
-            if (!task.getDescription().isEmpty()) {
-                text += " - " + task.getDescription();
-                NiceLoadMod.getInstance().getTextRenderer().drawText(
-                    matrices,
-                    text,
-                    i / 2 - r + 3, y - 3, r * 2 - 6,
-                    textColor | ((int)(opacity * 255) << 24)
+        synchronized (niceload$tasks) {
+            final Iterator<LoadTask> it = niceload$tasks.values().iterator();
+            while (it.hasNext()) {
+                final LoadTask task = it.next();
+                final float progress = task.getProgress01();
+                if (progress >= 1f) {
+                    it.remove();
+                    continue;
+                }
+                if (++count > limit) continue;
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, h);
+                renderProgressBar(
+                    matrices, i / 2 - r, y - 6, i / 2 + r, y + 7, opacity,
+                    task.getMaxProgress() > 1 ? progress : 0.5f
                 );
-            } else {
-                NiceLoadMod.getInstance().getTextRenderer().drawCenteredText(
-                    matrices,
-                    text,
-                    i / 2, y - 3,
-                    textColor | ((int)(opacity * 255) << 24)
-                );
+                String text = task.getName();
+                if (task.getMaxProgress() > 1) {
+                    text += " - " + (Math.round(MathHelper.clamp(progress, 0f, 1f) * 1000) / 10.0) + "%";
+                }
+                if (!task.getDescription().isEmpty()) {
+                    text += " - " + task.getDescription();
+                    NiceLoadMod.getInstance().getTextRenderer().drawText(
+                        matrices,
+                        text,
+                        i / 2 - r + 3, y - 3, r * 2 - 6,
+                        textColor | ((int)(opacity * 255) << 24)
+                    );
+                } else {
+                    NiceLoadMod.getInstance().getTextRenderer().drawCenteredText(
+                        matrices,
+                        text,
+                        i / 2, y - 3,
+                        textColor | ((int)(opacity * 255) << 24)
+                    );
+                }
+                y += 20;
             }
-            y += 20;
         }
     }
 

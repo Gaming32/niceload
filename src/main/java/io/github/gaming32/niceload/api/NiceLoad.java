@@ -26,8 +26,10 @@ public final class NiceLoad {
         }
         final SplashScreen splash = (SplashScreen)overlay;
         if (!TO_ADD_QUEUE.isEmpty()) {
-            TO_ADD_QUEUE.values().forEach(splash::addTask);
-            TO_ADD_QUEUE.clear();
+            synchronized (TO_ADD_QUEUE) {
+                TO_ADD_QUEUE.values().forEach(splash::addTask);
+                TO_ADD_QUEUE.clear();
+            }
         }
         return splash;
     }
@@ -37,7 +39,9 @@ public final class NiceLoad {
         if (splash != null) {
             splash.addTask(task);
         } else {
-            TO_ADD_QUEUE.put(task.getName(), task);
+            synchronized (TO_ADD_QUEUE) {
+                TO_ADD_QUEUE.put(task.getName(), task);
+            }
         }
         return task;
     }
@@ -47,7 +51,9 @@ public final class NiceLoad {
         if (splash != null) {
             return splash.getTask(name);
         } else {
-            return TO_ADD_QUEUE.get(name);
+            synchronized (TO_ADD_QUEUE) {
+                return TO_ADD_QUEUE.get(name);
+            }
         }
     }
 
