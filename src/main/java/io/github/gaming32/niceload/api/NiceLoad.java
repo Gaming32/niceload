@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+@SuppressWarnings({"UnusedReturnValue", "BooleanMethodIsAlwaysInverted", "unused"})
 public final class NiceLoad {
     private static final Map<String, LoadTask> TO_ADD_QUEUE = new LinkedHashMap<>();
     private static final Set<String> REGISTERED_RELOADERS = new HashSet<>();
@@ -21,21 +22,26 @@ public final class NiceLoad {
 
     public static SplashScreen getSplashScreen() {
         final Overlay overlay = MinecraftClient.getInstance().getOverlay();
+
         if (!(overlay instanceof SplashOverlay)) {
             return null;
         }
+
         final SplashScreen splash = (SplashScreen)overlay;
+
         if (!TO_ADD_QUEUE.isEmpty()) {
             synchronized (TO_ADD_QUEUE) {
                 TO_ADD_QUEUE.values().forEach(splash::addTask);
                 TO_ADD_QUEUE.clear();
             }
         }
+
         return splash;
     }
 
     public static LoadTask addTask(LoadTask task) {
         final SplashScreen splash = getSplashScreen();
+
         if (splash != null) {
             splash.addTask(task);
         } else {
@@ -43,11 +49,13 @@ public final class NiceLoad {
                 TO_ADD_QUEUE.put(task.getName(), task);
             }
         }
+
         return task;
     }
 
     public static LoadTask getTask(String name) {
         final SplashScreen splash = getSplashScreen();
+
         if (splash != null) {
             return splash.getTask(name);
         } else {
@@ -107,15 +115,18 @@ public final class NiceLoad {
 
     public static String getReloaderName(ResourceReloader reloader) {
         String name = reloader.getName();
+
         if (
             reloader instanceof IdentifiableResourceReloadListener &&
             name.equals(reloader.getClass().getSimpleName())
         ) {
             return ((IdentifiableResourceReloadListener)reloader).getFabricId().toString();
         }
-        if (name.equals("") && reloader.getClass().getDeclaringClass() != null) {
+
+        if (name.isEmpty() && reloader.getClass().getDeclaringClass() != null) {
             name = reloader.getClass().getDeclaringClass().getSimpleName();
         }
+
         return name;
     }
 

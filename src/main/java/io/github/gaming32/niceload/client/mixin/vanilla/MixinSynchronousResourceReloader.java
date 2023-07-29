@@ -18,6 +18,7 @@ public interface MixinSynchronousResourceReloader {
     )
     default void beginReload(Profiler profiler, ResourceManager resourceManager, CallbackInfo ci) {
         final String name = NiceLoad.getReloaderName((ResourceReloader)this);
+
         if (!NiceLoad.isReloaderRegistered(name)) {
             NiceLoad.beginTask(name);
         }
@@ -29,6 +30,7 @@ public interface MixinSynchronousResourceReloader {
     )
     default void endReload(Profiler profiler, ResourceManager resourceManager, CallbackInfo ci) {
         final String name = NiceLoad.getReloaderName((ResourceReloader)this);
+
         if (!NiceLoad.isReloaderRegistered(name)) {
             NiceLoad.endTask(name);
         }
