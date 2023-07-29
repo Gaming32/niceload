@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
+@SuppressWarnings("MissingUnique")
 @Mixin(EntityRenderers.class)
 public class MixinEntityRenderers {
     @Shadow @Final private static Map<EntityType<?>, EntityRendererFactory<?>> RENDERER_FACTORIES;

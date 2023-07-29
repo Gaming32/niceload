@@ -2,6 +2,7 @@ package io.github.gaming32.niceload.api;
 
 import io.github.gaming32.niceload.client.NiceLoadInternals;
 
+@SuppressWarnings({"UnusedReturnValue", "unused"})
 public final class LoadTask {
     private final String name;
     private int progress;
@@ -60,7 +61,9 @@ public final class LoadTask {
         } else {
             this.description = description.toString();
         }
+
         NiceLoadInternals.attemptRender();
+
         return this;
     }
 
